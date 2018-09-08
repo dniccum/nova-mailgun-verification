@@ -66,7 +66,6 @@ class MailgunService
         }
 
         $result = $this->mailgun->get("domains/".$modelResult->$attribute, [
-            'password' => '6b2fe41cc9c1d0423b29b26d6cb9586d',
             'force_dkim_authority' => true
         ]);
 
@@ -91,7 +90,6 @@ class MailgunService
 
         $result = $this->mailgun->post("domains", [
             'name' => $modelResult->$attribute,
-            'password' => '6b2fe41cc9c1d0423b29b26d6cb9586d',
             'force_dkim_authority' => true
         ]);
 
