@@ -1077,6 +1077,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         addDomain: function addDomain() {
+            var _this = this;
+
             var vm = this;
 
             vm.addingDomain = true;
@@ -1089,6 +1091,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 vm.notAdded = false;
                 vm.isDisabled = domain.is_disabled;
                 vm.recordsToAdd = responseBody.sending_dns_records;
+
+                _this.$toasted.show('Domain successfully added.', { type: 'success' });
             }).catch(function (error) {
                 console.error(error.response);
 
@@ -1103,6 +1107,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         vm.error = 'Something has happened.';
                         break;
                 }
+
+                _this.$toasted.show('There was a problem adding your domain.', { type: 'error' });
             }).finally(function () {
                 vm.addingDomain = false;
             });
@@ -2241,7 +2247,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("p", { staticClass: "mb-4" }, [
                     _vm._v(
-                      "Add the following DNS records to your domain in order for it to be verified. It may take a little while for the records to propegate and/or take effect."
+                      "Add the following DNS records to your domain in order for it to be verified. It may take a little while for the records to propagate and/or take effect."
                     )
                   ]),
                   _vm._v(" "),

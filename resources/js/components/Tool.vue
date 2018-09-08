@@ -18,7 +18,7 @@
 
             <div class="pt-4" v-if="!verified">
                 <h4 class="pb-2">Records to be added</h4>
-                <p class="mb-4">Add the following DNS records to your domain in order for it to be verified. It may take a little while for the records to propegate and/or take effect.</p>
+                <p class="mb-4">Add the following DNS records to your domain in order for it to be verified. It may take a little while for the records to propagate and/or take effect.</p>
                 <div class="bg-20 border border-40 px-4 py-3 rounded relative mb-2" v-for="dnsRecord in recordsToAdd">
                     <div class="flex mb-2">
                         <div style="width: 70px;">
