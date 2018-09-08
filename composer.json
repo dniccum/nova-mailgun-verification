@@ -7,6 +7,13 @@
         "nova",
         "mailgun"
     ],
+    "authors": [
+        {
+            "name": "Doug Niccum",
+            "email": "dniccumdesign@gmail.com",
+            "role": "Developer"
+        }
+    ],
     "license": "MIT",
     "require": {
         "php": ">=7.1.0",
