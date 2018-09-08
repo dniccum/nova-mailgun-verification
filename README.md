@@ -16,7 +16,7 @@ You will need the following items to use this tool:
 To install this tool, use the installation code below:
 
 ```
-composer require dniccum/nova-mailgun-cerification
+composer require dniccum/mailgun-domain-verification
 ```
 
 ## Usage
