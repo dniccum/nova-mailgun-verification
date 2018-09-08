@@ -1,9 +1,11 @@
 {
     "name": "dniccum/mailgun-domain-verification",
-    "description": "A Laravel Nova resource tool.",
+    "description": "A Laravel Nova resource tool that allows you to add domains to a Mailgun account and verify their status.",
+    "homepage": "https://github.com/dniccum/nova-mailgun-verification",
     "keywords": [
         "laravel",
-        "nova"
+        "nova",
+        "mailgun"
     ],
     "license": "MIT",
     "require": {
