@@ -1,1 +1,675 @@
-!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:r})},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=7)}([function(e,t,n){"use strict";var r=n(2),o=n(14),i=Object.prototype.toString;function s(e){return"[object Array]"===i.call(e)}function a(e){return null!==e&&"object"==typeof e}function u(e){return"[object Function]"===i.call(e)}function c(e,t){if(null!==e&&void 0!==e)if("object"!=typeof e&&(e=[e]),s(e))for(var n=0,r=e.length;n<r;n++)t.call(null,e[n],n,e);else for(var o in e)Object.prototype.hasOwnProperty.call(e,o)&&t.call(null,e[o],o,e)}e.exports={isArray:s,isArrayBuffer:function(e){return"[object ArrayBuffer]"===i.call(e)},isBuffer:o,isFormData:function(e){return"undefined"!=typeof FormData&&e instanceof FormData},isArrayBufferView:function(e){return"undefined"!=typeof ArrayBuffer&&ArrayBuffer.isView?ArrayBuffer.isView(e):e&&e.buffer&&e.buffer instanceof ArrayBuffer},isString:function(e){return"string"==typeof e},isNumber:function(e){return"number"==typeof e},isObject:a,isUndefined:function(e){return void 0===e},isDate:function(e){return"[object Date]"===i.call(e)},isFile:function(e){return"[object File]"===i.call(e)},isBlob:function(e){return"[object Blob]"===i.call(e)},isFunction:u,isStream:function(e){return a(e)&&u(e.pipe)},isURLSearchParams:function(e){return"undefined"!=typeof URLSearchParams&&e instanceof URLSearchParams},isStandardBrowserEnv:function(){return("undefined"==typeof navigator||"ReactNative"!==navigator.product)&&"undefined"!=typeof window&&"undefined"!=typeof document},forEach:c,merge:function e(){var t={};function n(n,r){"object"==typeof t[r]&&"object"==typeof n?t[r]=e(t[r],n):t[r]=n}for(var r=0,o=arguments.length;r<o;r++)c(arguments[r],n);return t},extend:function(e,t,n){return c(t,function(t,o){e[o]=n&&"function"==typeof t?r(t,n):t}),e},trim:function(e){return e.replace(/^\s*/,"").replace(/\s*$/,"")}}},function(e,t,n){"use strict";(function(t){var r=n(0),o=n(17),i={"Content-Type":"application/x-www-form-urlencoded"};function s(e,t){!r.isUndefined(e)&&r.isUndefined(e["Content-Type"])&&(e["Content-Type"]=t)}var a,u={adapter:("undefined"!=typeof XMLHttpRequest?a=n(3):void 0!==t&&(a=n(3)),a),transformRequest:[function(e,t){return o(t,"Content-Type"),r.isFormData(e)||r.isArrayBuffer(e)||r.isBuffer(e)||r.isStream(e)||r.isFile(e)||r.isBlob(e)?e:r.isArrayBufferView(e)?e.buffer:r.isURLSearchParams(e)?(s(t,"application/x-www-form-urlencoded;charset=utf-8"),e.toString()):r.isObject(e)?(s(t,"application/json;charset=utf-8"),JSON.stringify(e)):e}],transformResponse:[function(e){if("string"==typeof e)try{e=JSON.parse(e)}catch(e){}return e}],timeout:0,xsrfCookieName:"XSRF-TOKEN",xsrfHeaderName:"X-XSRF-TOKEN",maxContentLength:-1,validateStatus:function(e){return e>=200&&e<300}};u.headers={common:{Accept:"application/json, text/plain, */*"}},r.forEach(["delete","get","head"],function(e){u.headers[e]={}}),r.forEach(["post","put","patch"],function(e){u.headers[e]=r.merge(i)}),e.exports=u}).call(t,n(16))},function(e,t,n){"use strict";e.exports=function(e,t){return function(){for(var n=new Array(arguments.length),r=0;r<n.length;r++)n[r]=arguments[r];return e.apply(t,n)}}},function(e,t,n){"use strict";var r=n(0),o=n(18),i=n(20),s=n(21),a=n(22),u=n(4),c="undefined"!=typeof window&&window.btoa&&window.btoa.bind(window)||n(23);e.exports=function(e){return new Promise(function(t,f){var d=e.data,l=e.headers;r.isFormData(d)&&delete l["Content-Type"];var p=new XMLHttpRequest,h="onreadystatechange",m=!1;if("undefined"==typeof window||!window.XDomainRequest||"withCredentials"in p||a(e.url)||(p=new window.XDomainRequest,h="onload",m=!0,p.onprogress=function(){},p.ontimeout=function(){}),e.auth){var v=e.auth.username||"",g=e.auth.password||"";l.Authorization="Basic "+c(v+":"+g)}if(p.open(e.method.toUpperCase(),i(e.url,e.params,e.paramsSerializer),!0),p.timeout=e.timeout,p[h]=function(){if(p&&(4===p.readyState||m)&&(0!==p.status||p.responseURL&&0===p.responseURL.indexOf("file:"))){var n="getAllResponseHeaders"in p?s(p.getAllResponseHeaders()):null,r={data:e.responseType&&"text"!==e.responseType?p.response:p.responseText,status:1223===p.status?204:p.status,statusText:1223===p.status?"No Content":p.statusText,headers:n,config:e,request:p};o(t,f,r),p=null}},p.onerror=function(){f(u("Network Error",e,null,p)),p=null},p.ontimeout=function(){f(u("timeout of "+e.timeout+"ms exceeded",e,"ECONNABORTED",p)),p=null},r.isStandardBrowserEnv()){var y=n(24),b=(e.withCredentials||a(e.url))&&e.xsrfCookieName?y.read(e.xsrfCookieName):void 0;b&&(l[e.xsrfHeaderName]=b)}if("setRequestHeader"in p&&r.forEach(l,function(e,t){void 0===d&&"content-type"===t.toLowerCase()?delete l[t]:p.setRequestHeader(t,e)}),e.withCredentials&&(p.withCredentials=!0),e.responseType)try{p.responseType=e.responseType}catch(t){if("json"!==e.responseType)throw t}"function"==typeof e.onDownloadProgress&&p.addEventListener("progress",e.onDownloadProgress),"function"==typeof e.onUploadProgress&&p.upload&&p.upload.addEventListener("progress",e.onUploadProgress),e.cancelToken&&e.cancelToken.promise.then(function(e){p&&(p.abort(),f(e),p=null)}),void 0===d&&(d=null),p.send(d)})}},function(e,t,n){"use strict";var r=n(19);e.exports=function(e,t,n,o,i){var s=new Error(e);return r(s,t,n,o,i)}},function(e,t,n){"use strict";e.exports=function(e){return!(!e||!e.__CANCEL__)}},function(e,t,n){"use strict";function r(e){this.message=e}r.prototype.toString=function(){return"Cancel"+(this.message?": "+this.message:"")},r.prototype.__CANCEL__=!0,e.exports=r},function(e,t,n){n(8),e.exports=n(33)},function(e,t,n){Nova.booting(function(e,t){e.component("mailgun-domain-verification",n(9))})},function(e,t,n){var r=n(10)(n(11),n(32),!1,null,null,null);e.exports=r.exports},function(e,t){e.exports=function(e,t,n,r,o,i){var s,a=e=e||{},u=typeof e.default;"object"!==u&&"function"!==u||(s=e,a=e.default);var c,f="function"==typeof a?a.options:a;if(t&&(f.render=t.render,f.staticRenderFns=t.staticRenderFns,f._compiled=!0),n&&(f.functional=!0),o&&(f._scopeId=o),i?(c=function(e){(e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),r&&r.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(i)},f._ssrRegister=c):r&&(c=r),c){var d=f.functional,l=d?f.render:f.beforeCreate;d?(f._injectStyles=c,f.render=function(e,t){return c.call(t),l(e,t)}):f.beforeCreate=l?[].concat(l,c):[c]}return{esModule:s,exports:a,options:f}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=n(12),o=n.n(r);t.default={props:["resourceName","resourceId","field"],mounted:function(){this.getStatus()},data:function(){return{loading:!0,successfulResponse:!1,error:"",verified:!1,isDisabled:!1,notAdded:!1,addingDomain:!1,recordsToAdd:[]}},methods:{compileRequest:function(){var e={id:this.resourceId,model:this.resourceName};return this.field.attribute&&(e.attribute=this.field.attribute),e},getStatus:function(){var e=this;o.a.get("/nova-vendor/mailgun-domain-verification/domain",{params:this.compileRequest()}).then(function(t){var n=t.data.domain.http_response_body,r=n.domain,o=r.state;e.successfulResponse=!0,e.verified="active"===o,e.isDisabled=r.is_disabled,e.recordsToAdd=n.sending_dns_records}).catch(function(t){var n=t.response.data;switch(n.exception){case"Mailgun\\Connection\\Exceptions\\InvalidCredentials":e.error="Your Mailgun credentials are not correct. Please ensure that your Mailgun Key and SMTP password are set.";break;case"Mailgun\\Connection\\Exceptions\\MissingEndpoint":e.successfulResponse=!0,e.notAdded=!0}e.successfulResponse||""!==e.error||(e.error=n.message)}).finally(function(){e.loading=!1})},addDomain:function(){var e=this,t=this;t.addingDomain=!0,o.a.post("/nova-vendor/mailgun-domain-verification/domain",this.compileRequest()).then(function(n){var r=n.data.domain.http_response_body,o=r.domain;t.successfulResponse=!0,t.notAdded=!1,t.isDisabled=o.is_disabled,t.recordsToAdd=r.sending_dns_records,e.$toasted.show("Domain successfully added.",{type:"success"})}).catch(function(n){switch(console.error(n.response),n.response.data.exception){case"Mailgun\\Connection\\Exceptions\\InvalidCredentials":t.error="Your Mailgun credentials are not correct. Please ensure that your Mailgun Key and SMTP password are set.";break;default:t.error="Something has happened."}e.$toasted.show("There was a problem adding your domain.",{type:"error"})}).finally(function(){t.addingDomain=!1})}}}},function(e,t,n){e.exports=n(13)},function(e,t,n){"use strict";var r=n(0),o=n(2),i=n(15),s=n(1);function a(e){var t=new i(e),n=o(i.prototype.request,t);return r.extend(n,i.prototype,t),r.extend(n,t),n}var u=a(s);u.Axios=i,u.create=function(e){return a(r.merge(s,e))},u.Cancel=n(6),u.CancelToken=n(30),u.isCancel=n(5),u.all=function(e){return Promise.all(e)},u.spread=n(31),e.exports=u,e.exports.default=u},function(e,t){function n(e){return!!e.constructor&&"function"==typeof e.constructor.isBuffer&&e.constructor.isBuffer(e)}e.exports=function(e){return null!=e&&(n(e)||function(e){return"function"==typeof e.readFloatLE&&"function"==typeof e.slice&&n(e.slice(0,0))}(e)||!!e._isBuffer)}},function(e,t,n){"use strict";var r=n(1),o=n(0),i=n(25),s=n(26);function a(e){this.defaults=e,this.interceptors={request:new i,response:new i}}a.prototype.request=function(e){"string"==typeof e&&(e=o.merge({url:arguments[0]},arguments[1])),(e=o.merge(r,{method:"get"},this.defaults,e)).method=e.method.toLowerCase();var t=[s,void 0],n=Promise.resolve(e);for(this.interceptors.request.forEach(function(e){t.unshift(e.fulfilled,e.rejected)}),this.interceptors.response.forEach(function(e){t.push(e.fulfilled,e.rejected)});t.length;)n=n.then(t.shift(),t.shift());return n},o.forEach(["delete","get","head","options"],function(e){a.prototype[e]=function(t,n){return this.request(o.merge(n||{},{method:e,url:t}))}}),o.forEach(["post","put","patch"],function(e){a.prototype[e]=function(t,n,r){return this.request(o.merge(r||{},{method:e,url:t,data:n}))}}),e.exports=a},function(e,t){var n,r,o=e.exports={};function i(){throw new Error("setTimeout has not been defined")}function s(){throw new Error("clearTimeout has not been defined")}function a(e){if(n===setTimeout)return setTimeout(e,0);if((n===i||!n)&&setTimeout)return n=setTimeout,setTimeout(e,0);try{return n(e,0)}catch(t){try{return n.call(null,e,0)}catch(t){return n.call(this,e,0)}}}!function(){try{n="function"==typeof setTimeout?setTimeout:i}catch(e){n=i}try{r="function"==typeof clearTimeout?clearTimeout:s}catch(e){r=s}}();var u,c=[],f=!1,d=-1;function l(){f&&u&&(f=!1,u.length?c=u.concat(c):d=-1,c.length&&p())}function p(){if(!f){var e=a(l);f=!0;for(var t=c.length;t;){for(u=c,c=[];++d<t;)u&&u[d].run();d=-1,t=c.length}u=null,f=!1,function(e){if(r===clearTimeout)return clearTimeout(e);if((r===s||!r)&&clearTimeout)return r=clearTimeout,clearTimeout(e);try{r(e)}catch(t){try{return r.call(null,e)}catch(t){return r.call(this,e)}}}(e)}}function h(e,t){this.fun=e,this.array=t}function m(){}o.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];c.push(new h(e,t)),1!==c.length||f||a(p)},h.prototype.run=function(){this.fun.apply(null,this.array)},o.title="browser",o.browser=!0,o.env={},o.argv=[],o.version="",o.versions={},o.on=m,o.addListener=m,o.once=m,o.off=m,o.removeListener=m,o.removeAllListeners=m,o.emit=m,o.prependListener=m,o.prependOnceListener=m,o.listeners=function(e){return[]},o.binding=function(e){throw new Error("process.binding is not supported")},o.cwd=function(){return"/"},o.chdir=function(e){throw new Error("process.chdir is not supported")},o.umask=function(){return 0}},function(e,t,n){"use strict";var r=n(0);e.exports=function(e,t){r.forEach(e,function(n,r){r!==t&&r.toUpperCase()===t.toUpperCase()&&(e[t]=n,delete e[r])})}},function(e,t,n){"use strict";var r=n(4);e.exports=function(e,t,n){var o=n.config.validateStatus;n.status&&o&&!o(n.status)?t(r("Request failed with status code "+n.status,n.config,null,n.request,n)):e(n)}},function(e,t,n){"use strict";e.exports=function(e,t,n,r,o){return e.config=t,n&&(e.code=n),e.request=r,e.response=o,e}},function(e,t,n){"use strict";var r=n(0);function o(e){return encodeURIComponent(e).replace(/%40/gi,"@").replace(/%3A/gi,":").replace(/%24/g,"$").replace(/%2C/gi,",").replace(/%20/g,"+").replace(/%5B/gi,"[").replace(/%5D/gi,"]")}e.exports=function(e,t,n){if(!t)return e;var i;if(n)i=n(t);else if(r.isURLSearchParams(t))i=t.toString();else{var s=[];r.forEach(t,function(e,t){null!==e&&void 0!==e&&(r.isArray(e)?t+="[]":e=[e],r.forEach(e,function(e){r.isDate(e)?e=e.toISOString():r.isObject(e)&&(e=JSON.stringify(e)),s.push(o(t)+"="+o(e))}))}),i=s.join("&")}return i&&(e+=(-1===e.indexOf("?")?"?":"&")+i),e}},function(e,t,n){"use strict";var r=n(0),o=["age","authorization","content-length","content-type","etag","expires","from","host","if-modified-since","if-unmodified-since","last-modified","location","max-forwards","proxy-authorization","referer","retry-after","user-agent"];e.exports=function(e){var t,n,i,s={};return e?(r.forEach(e.split("\n"),function(e){if(i=e.indexOf(":"),t=r.trim(e.substr(0,i)).toLowerCase(),n=r.trim(e.substr(i+1)),t){if(s[t]&&o.indexOf(t)>=0)return;s[t]="set-cookie"===t?(s[t]?s[t]:[]).concat([n]):s[t]?s[t]+", "+n:n}}),s):s}},function(e,t,n){"use strict";var r=n(0);e.exports=r.isStandardBrowserEnv()?function(){var e,t=/(msie|trident)/i.test(navigator.userAgent),n=document.createElement("a");function o(e){var r=e;return t&&(n.setAttribute("href",r),r=n.href),n.setAttribute("href",r),{href:n.href,protocol:n.protocol?n.protocol.replace(/:$/,""):"",host:n.host,search:n.search?n.search.replace(/^\?/,""):"",hash:n.hash?n.hash.replace(/^#/,""):"",hostname:n.hostname,port:n.port,pathname:"/"===n.pathname.charAt(0)?n.pathname:"/"+n.pathname}}return e=o(window.location.href),function(t){var n=r.isString(t)?o(t):t;return n.protocol===e.protocol&&n.host===e.host}}():function(){return!0}},function(e,t,n){"use strict";var r="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";function o(){this.message="String contains an invalid character"}o.prototype=new Error,o.prototype.code=5,o.prototype.name="InvalidCharacterError",e.exports=function(e){for(var t,n,i=String(e),s="",a=0,u=r;i.charAt(0|a)||(u="=",a%1);s+=u.charAt(63&t>>8-a%1*8)){if((n=i.charCodeAt(a+=.75))>255)throw new o;t=t<<8|n}return s}},function(e,t,n){"use strict";var r=n(0);e.exports=r.isStandardBrowserEnv()?{write:function(e,t,n,o,i,s){var a=[];a.push(e+"="+encodeURIComponent(t)),r.isNumber(n)&&a.push("expires="+new Date(n).toGMTString()),r.isString(o)&&a.push("path="+o),r.isString(i)&&a.push("domain="+i),!0===s&&a.push("secure"),document.cookie=a.join("; ")},read:function(e){var t=document.cookie.match(new RegExp("(^|;\\s*)("+e+")=([^;]*)"));return t?decodeURIComponent(t[3]):null},remove:function(e){this.write(e,"",Date.now()-864e5)}}:{write:function(){},read:function(){return null},remove:function(){}}},function(e,t,n){"use strict";var r=n(0);function o(){this.handlers=[]}o.prototype.use=function(e,t){return this.handlers.push({fulfilled:e,rejected:t}),this.handlers.length-1},o.prototype.eject=function(e){this.handlers[e]&&(this.handlers[e]=null)},o.prototype.forEach=function(e){r.forEach(this.handlers,function(t){null!==t&&e(t)})},e.exports=o},function(e,t,n){"use strict";var r=n(0),o=n(27),i=n(5),s=n(1),a=n(28),u=n(29);function c(e){e.cancelToken&&e.cancelToken.throwIfRequested()}e.exports=function(e){return c(e),e.baseURL&&!a(e.url)&&(e.url=u(e.baseURL,e.url)),e.headers=e.headers||{},e.data=o(e.data,e.headers,e.transformRequest),e.headers=r.merge(e.headers.common||{},e.headers[e.method]||{},e.headers||{}),r.forEach(["delete","get","head","post","put","patch","common"],function(t){delete e.headers[t]}),(e.adapter||s.adapter)(e).then(function(t){return c(e),t.data=o(t.data,t.headers,e.transformResponse),t},function(t){return i(t)||(c(e),t&&t.response&&(t.response.data=o(t.response.data,t.response.headers,e.transformResponse))),Promise.reject(t)})}},function(e,t,n){"use strict";var r=n(0);e.exports=function(e,t,n){return r.forEach(n,function(n){e=n(e,t)}),e}},function(e,t,n){"use strict";e.exports=function(e){return/^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(e)}},function(e,t,n){"use strict";e.exports=function(e,t){return t?e.replace(/\/+$/,"")+"/"+t.replace(/^\/+/,""):e}},function(e,t,n){"use strict";var r=n(6);function o(e){if("function"!=typeof e)throw new TypeError("executor must be a function.");var t;this.promise=new Promise(function(e){t=e});var n=this;e(function(e){n.reason||(n.reason=new r(e),t(n.reason))})}o.prototype.throwIfRequested=function(){if(this.reason)throw this.reason},o.source=function(){var e;return{token:new o(function(t){e=t}),cancel:e}},e.exports=o},function(e,t,n){"use strict";e.exports=function(e){return function(t){return e.apply(null,t)}}},function(e,t){e.exports={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[e.loading?n("div",[e._m(0)]):e._e(),e._v(" "),!e.successfulResponse||e.loading||e.notAdded?e._e():n("div",{staticClass:"pt-2 pb-2"},[n("h3",{staticClass:"pb-2"},[e._v("Status")]),e._v(" "),e.isDisabled?e._e():n("div",[n("p",{staticClass:"text-90"},[n("span",{staticClass:"inline-block rounded-full w-2 h-2 mr-1",class:{"bg-danger":!e.verified,"bg-success":e.verified}}),e._v(" "),n("span",[e._v(e._s(e.verified?"Verified":"Unverified"))])])]),e._v(" "),e.isDisabled?n("p",{staticClass:"text-90"},[n("strong",[e._v("This domain has been disabled.")]),e._v(" Please refer to your Mailgun account dashboard for more information.\n        ")]):e._e(),e._v(" "),e.verified?e._e():n("div",{staticClass:"pt-4"},[n("h4",{staticClass:"pb-2"},[e._v("Records to be added")]),e._v(" "),n("p",{staticClass:"mb-4"},[e._v("Add the following DNS records to your domain in order for it to be verified. It may take a little while for the records to propagate and/or take effect.")]),e._v(" "),e._l(e.recordsToAdd,function(t){return n("div",{staticClass:"bg-20 border border-40 px-4 py-3 rounded relative mb-2"},[n("div",{staticClass:"flex mb-2"},[e._m(1,!0),e._v(" "),n("div",{staticClass:"w-full ml-6"},[n("p",{staticClass:"break-words"},[e._v(e._s(t.record_type))])])]),e._v(" "),n("div",{staticClass:"flex mb-4 mt-4"},[e._m(2,!0),e._v(" "),n("div",{staticClass:"w-full ml-6"},[n("input",{staticClass:"form-control form-input form-input-bordered w-full",attrs:{type:"text",readonly:""},domProps:{value:t.value}})])]),e._v(" "),n("div",{staticClass:"flex mb-2"},[e._m(3,!0),e._v(" "),n("div",{staticClass:"w-full ml-6"},[n("p",{staticClass:"break-words"},["unknown"===t.valid||"invalid"===t.valid?n("span",{staticClass:"text-danger font-bold"},[e._v(e._s(t.valid))]):e._e(),e._v(" "),"valid"===t.valid?n("span",{staticClass:"text-success font-bold"},[e._v(e._s(t.valid))]):e._e()])])])])})],2)]),e._v(" "),e.successfulResponse||e.loading?e._e():n("div",[n("div",{staticClass:"bg-red-lightest border border-red-light text-red-dark px-4 py-3 rounded relative",staticStyle:{"background-color":"#FCEBEA","border-color":"#EF5753"},attrs:{role:"alert"}},[n("strong",{staticClass:"font-bold",staticStyle:{color:"#CC1F1A"}},[e._v("Error!")]),e._v(" "),n("span",{staticClass:"block sm:inline",staticStyle:{color:"#CC1F1A"}},[e._v("\n                "+e._s(e.error)+"\n            ")])])]),e._v(" "),e.notAdded&&!e.loading?n("div",{staticClass:"pt-2 pb-2"},[n("h3",{staticClass:"pb-2"},[e._v("Domain not added.")]),e._v(" "),n("p",{staticClass:"pb-4"},[e._v("This domain has not been added to your Mailgun account. Click the button below to add the domain for verification.")]),e._v(" "),n("button",{staticClass:"text-white font-bold py-2 px-4 rounded",class:e.addingDomain?"bg-70":"bg-primary hover:bg-primary-dark",attrs:{type:"button",disabled:e.addingDomain},on:{click:e.addDomain}},[e._v("\n            "+e._s(e.addingDomain?"Adding domain...":"Add Domain")+"\n        ")])]):e._e()])},staticRenderFns:[function(){var e=this.$createElement,t=this._self._c||e;return t("p",[t("em",[this._v("Retrieving domain status...")])])},function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticStyle:{width:"70px"}},[t("p",[t("strong",[this._v("Type:")])])])},function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticStyle:{width:"70px"}},[t("p",[t("strong",[this._v("Value:")])])])},function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticStyle:{width:"70px"}},[t("p",[t("strong",[this._v("Valid:")])])])}]}},function(e,t){}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+module.exports = __webpack_require__(6);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Nova.booting(function (Vue, router) {
+    Vue.component('mailgun-domain-verification', __webpack_require__(2));
+});
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(4)
+/* template */
+var __vue_template__ = __webpack_require__(5)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Tool.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-68ff5483", Component.options)
+  } else {
+    hotAPI.reload("data-v-68ff5483", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+throw new Error("Cannot find module \"axios\"");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['resourceName', 'resourceId', 'field'],
+
+    mounted: function mounted() {
+        this.getStatus();
+    },
+
+    data: function data() {
+        return {
+            loading: true,
+            successfulResponse: false,
+            error: '',
+            verified: false,
+            isDisabled: false,
+            notAdded: false,
+            addingDomain: false,
+            recordsToAdd: []
+        };
+    },
+    methods: {
+        compileRequest: function compileRequest() {
+            var requestData = {
+                id: this.resourceId,
+                model: this.resourceName
+            };
+
+            if (this.field.attribute) {
+                requestData['attribute'] = this.field.attribute;
+            }
+
+            return requestData;
+        },
+        getStatus: function getStatus() {
+            var vm = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/nova-vendor/mailgun-domain-verification/domain', {
+                params: this.compileRequest()
+            }).then(function (response) {
+                var responseBody = response.data.domain.http_response_body;
+                var domain = responseBody.domain;
+                var status = domain.state;
+
+                vm.successfulResponse = true;
+                vm.verified = status === 'active';
+                vm.isDisabled = domain.is_disabled;
+                vm.recordsToAdd = responseBody.sending_dns_records;
+            }).catch(function (error) {
+                var data = error.response.data;
+                var exception = data.exception;
+
+                switch (exception) {
+                    case 'Mailgun\\Connection\\Exceptions\\InvalidCredentials':
+                        vm.error = 'Your Mailgun credentials are not correct. Please ensure that your Mailgun Key and SMTP password are set.';
+                        break;
+                    case 'Mailgun\\Connection\\Exceptions\\MissingEndpoint':
+                        vm.successfulResponse = true;
+                        vm.notAdded = true;
+                        break;
+                }
+
+                if (!vm.successfulResponse && vm.error === '') {
+                    vm.error = data.message;
+                }
+            }).finally(function () {
+                vm.loading = false;
+            });
+        },
+        addDomain: function addDomain() {
+            var _this = this;
+
+            var vm = this;
+
+            vm.addingDomain = true;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/nova-vendor/mailgun-domain-verification/domain', this.compileRequest()).then(function (response) {
+                var responseBody = response.data.domain.http_response_body;
+                var domain = responseBody.domain;
+
+                vm.successfulResponse = true;
+                vm.notAdded = false;
+                vm.isDisabled = domain.is_disabled;
+                vm.recordsToAdd = responseBody.sending_dns_records;
+
+                _this.$toasted.show('Domain successfully added.', { type: 'success' });
+            }).catch(function (error) {
+                console.error(error.response);
+
+                var data = error.response.data;
+                var exception = data.exception;
+
+                switch (exception) {
+                    case 'Mailgun\\Connection\\Exceptions\\InvalidCredentials':
+                        vm.error = 'Your Mailgun credentials are not correct. Please ensure that your Mailgun Key and SMTP password are set.';
+                        break;
+                    default:
+                        vm.error = 'Something has happened.';
+                        break;
+                }
+
+                _this.$toasted.show('There was a problem adding your domain.', { type: 'error' });
+            }).finally(function () {
+                vm.addingDomain = false;
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm.loading ? _c("div", [_vm._m(0)]) : _vm._e(),
+    _vm._v(" "),
+    _vm.successfulResponse && !_vm.loading && !_vm.notAdded
+      ? _c("div", { staticClass: "pt-2 pb-2" }, [
+          _c("h3", { staticClass: "pb-2" }, [_vm._v("Status")]),
+          _vm._v(" "),
+          !_vm.isDisabled
+            ? _c("div", [
+                _c("p", { staticClass: "text-90" }, [
+                  _c("span", {
+                    staticClass: "inline-block rounded-full w-2 h-2 mr-1",
+                    class: {
+                      "bg-danger": !_vm.verified,
+                      "bg-success": _vm.verified
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v(_vm._s(_vm.verified ? "Verified" : "Unverified"))
+                  ])
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.isDisabled
+            ? _c("p", { staticClass: "text-90" }, [
+                _c("strong", [_vm._v("This domain has been disabled.")]),
+                _vm._v(
+                  " Please refer to your Mailgun account dashboard for more information.\n        "
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.verified
+            ? _c(
+                "div",
+                { staticClass: "pt-4" },
+                [
+                  _c("h4", { staticClass: "pb-2" }, [
+                    _vm._v("Records to be added")
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "mb-4" }, [
+                    _vm._v(
+                      "Add the following DNS records to your domain in order for it to be verified. It may take a little while for the records to propagate and/or take effect."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.recordsToAdd, function(dnsRecord) {
+                    return _c(
+                      "div",
+                      {
+                        staticClass:
+                          "bg-20 border border-40 px-4 py-3 rounded relative mb-2"
+                      },
+                      [
+                        _c("div", { staticClass: "flex mb-2" }, [
+                          _vm._m(1, true),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-full ml-6" }, [
+                            _c("p", { staticClass: "break-words" }, [
+                              _vm._v(_vm._s(dnsRecord.record_type))
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "flex mb-4 mt-4" }, [
+                          _vm._m(2, true),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-full ml-6" }, [
+                            _c("input", {
+                              staticClass:
+                                "form-control form-input form-input-bordered w-full",
+                              attrs: { type: "text", readonly: "" },
+                              domProps: { value: dnsRecord.value }
+                            })
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "flex mb-2" }, [
+                          _vm._m(3, true),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-full ml-6" }, [
+                            _c("p", { staticClass: "break-words" }, [
+                              dnsRecord.valid === "unknown" ||
+                              dnsRecord.valid === "invalid"
+                                ? _c(
+                                    "span",
+                                    { staticClass: "text-danger font-bold" },
+                                    [_vm._v(_vm._s(dnsRecord.valid))]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              dnsRecord.valid === "valid"
+                                ? _c(
+                                    "span",
+                                    { staticClass: "text-success font-bold" },
+                                    [_vm._v(_vm._s(dnsRecord.valid))]
+                                  )
+                                : _vm._e()
+                            ])
+                          ])
+                        ])
+                      ]
+                    )
+                  })
+                ],
+                2
+              )
+            : _vm._e()
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.successfulResponse && !_vm.loading
+      ? _c("div", [
+          _c(
+            "div",
+            {
+              staticClass:
+                "bg-red-lightest border border-red-light text-red-dark px-4 py-3 rounded relative",
+              staticStyle: {
+                "background-color": "#FCEBEA",
+                "border-color": "#EF5753"
+              },
+              attrs: { role: "alert" }
+            },
+            [
+              _c(
+                "strong",
+                { staticClass: "font-bold", staticStyle: { color: "#CC1F1A" } },
+                [_vm._v("Error!")]
+              ),
+              _vm._v(" "),
+              _c(
+                "span",
+                {
+                  staticClass: "block sm:inline",
+                  staticStyle: { color: "#CC1F1A" }
+                },
+                [
+                  _vm._v(
+                    "\n                " + _vm._s(_vm.error) + "\n            "
+                  )
+                ]
+              )
+            ]
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.notAdded && !_vm.loading
+      ? _c("div", { staticClass: "pt-2 pb-2" }, [
+          _c("h3", { staticClass: "pb-2" }, [_vm._v("Domain not added.")]),
+          _vm._v(" "),
+          _c("p", { staticClass: "pb-4" }, [
+            _vm._v(
+              "This domain has not been added to your Mailgun account. Click the button below to add the domain for verification."
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "text-white font-bold py-2 px-4 rounded",
+              class: _vm.addingDomain
+                ? "bg-70"
+                : "bg-primary hover:bg-primary-dark",
+              attrs: { type: "button", disabled: _vm.addingDomain },
+              on: { click: _vm.addDomain }
+            },
+            [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.addingDomain ? "Adding domain..." : "Add Domain") +
+                  "\n        "
+              )
+            ]
+          )
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [_c("em", [_vm._v("Retrieving domain status...")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticStyle: { width: "70px" } }, [
+      _c("p", [_c("strong", [_vm._v("Type:")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticStyle: { width: "70px" } }, [
+      _c("p", [_c("strong", [_vm._v("Value:")])])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticStyle: { width: "70px" } }, [
+      _c("p", [_c("strong", [_vm._v("Valid:")])])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-68ff5483", module.exports)
+  }
+}
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ })
+/******/ ]);
