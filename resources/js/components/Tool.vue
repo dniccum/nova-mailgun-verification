@@ -21,15 +21,23 @@
                 <p class="mb-4">Add the following DNS records to your domain in order for it to be verified. It may take a little while for the records to propagate and/or take effect.</p>
                 <div class="bg-20 border border-40 px-4 py-3 rounded relative mb-2" v-for="dnsRecord in recordsToAdd">
                     <div class="flex mb-2">
-                        <div style="width: 70px;">
+                        <div style="width: 100px;">
                             <p><strong>Type:</strong></p>
                         </div>
                         <div class="w-full ml-6">
                             <p class="break-words">{{ dnsRecord.record_type }}</p>
                         </div>
                     </div>
+                    <div class="flex mb-2">
+                        <div style="width: 100px;">
+                            <p><strong>Host/Name:</strong></p>
+                        </div>
+                        <div class="w-full ml-6">
+                            <p class="break-words">{{ dnsRecord.name }}</p>
+                        </div>
+                    </div>
                     <div class="flex mb-4 mt-4">
-                        <div style="width: 70px;">
+                        <div style="width: 100px;">
                             <p><strong>Value:</strong></p>
                         </div>
                         <div class="w-full ml-6">
@@ -40,7 +48,7 @@
                         </div>
                     </div>
                     <div class="flex mb-2">
-                        <div style="width: 70px;">
+                        <div style="width: 100px;">
                             <p><strong>Valid:</strong></p>
                         </div>
                         <div class="w-full ml-6">
