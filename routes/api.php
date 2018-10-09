@@ -43,6 +43,31 @@ Route::group(['middleware' => 'web'], function() {
             ], 500);
     });
 
+    Route::put('/domain', function (Request $request) {
+        $id = $request->get('id');
+        $model = $request->get('model');
+
+        if ($request->has('attribute')) {
+            $service = new \Dniccum\MailgunDomainVerification\MailgunService($model, $request->get('attribute'));
+        } else {
+            $service = new \Dniccum\MailgunDomainVerification\MailgunService($model);
+        }
+
+        $domain = $service->verifyDomainStatus($id);
+
+        if ($domain) {
+            return response()
+                ->json([
+                    'domain' => $domain
+                ], 200);
+        }
+
+        return response()
+            ->json([
+                'message' => NO_COLUMN_ERROR
+            ], 500);
+    });
+
     Route::post('/domain', function (Request $request) {
         $id = $request->get('id');
         $model = $request->get('model');
