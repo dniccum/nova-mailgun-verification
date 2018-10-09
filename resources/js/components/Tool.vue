@@ -13,6 +13,12 @@
                         <span class="inline-block rounded-full w-2 h-2 mr-1 bg-danger"></span>
                         <span>Unverified</span>
                     </p>
+                    <div class="pt-4">
+                        <button type="button" class="text-white font-bold py-2 px-4 rounded bg-primary hover:bg-primary-dark"
+                                @click="checkStatus">
+                            Check Status
+                        </button>
+                    </div>
                 </div>
                 <!--
                 <div v-if="!verified && partiallyVerified">
@@ -148,6 +154,49 @@
                 Axios.get('/nova-vendor/mailgun-domain-verification/domain', {
                     params: this.compileRequest()
                 }).then(response => {
+                    let responseBody = response.data.domain.http_response_body;
+                    let domain = responseBody.domain;
+                    let status = true;
+
+                    vm.successfulResponse = true;
+                    vm.isDisabled = domain.is_disabled;
+                    vm.recordsToAdd = responseBody.sending_dns_records;
+
+                    for (var i = 0; i < vm.recordsToAdd.length; i++) {
+                        if (vm.recordsToAdd[i].valid !== 'valid') {
+                            status = false;
+                            break;
+                        }
+                    }
+                    vm.verified = status;
+                }).catch(error => {
+                    let data = error.response.data;
+                    let exception = data.exception;
+
+                    switch (exception) {
+                        case 'Mailgun\\Connection\\Exceptions\\InvalidCredentials':
+                            vm.error = 'Your Mailgun credentials are not correct. Please ensure that your Mailgun Key and SMTP password are set.'
+                            break;
+                        case 'Mailgun\\Connection\\Exceptions\\MissingEndpoint':
+                            vm.successfulResponse = true;
+                            vm.notAdded = true;
+                            break;
+                    }
+
+                    if (!vm.successfulResponse && vm.error === '') {
+                        vm.error = data.message;
+                    }
+                }).finally(() => {
+                    vm.loading = false;
+                })
+            },
+
+            checkStatus() {
+                let vm = this;
+
+                vm.loading = true;
+
+                Axios.put('/nova-vendor/mailgun-domain-verification/domain', this.compileRequest()).then(response => {
                     let responseBody = response.data.domain.http_response_body;
                     let domain = responseBody.domain;
                     let status = true;
