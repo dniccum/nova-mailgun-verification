@@ -7,10 +7,29 @@
         <div class="pt-2 pb-2" v-if="successfulResponse && !loading && !notAdded">
             <h3 class="pb-2">Status</h3>
             <div v-if="!isDisabled">
-                <p class="text-90">
-                    <span class="inline-block rounded-full w-2 h-2 mr-1" :class="{ 'bg-danger' : !verified, 'bg-success' : verified }"></span>
-                    <span>{{ verified ? 'Verified' : 'Unverified' }}</span>
-                </p>
+
+                <div v-if="!verified">
+                    <p class="text-90">
+                        <span class="inline-block rounded-full w-2 h-2 mr-1 bg-danger"></span>
+                        <span>Unverified</span>
+                    </p>
+                </div>
+                <!--
+                <div v-if="!verified && partiallyVerified">
+                    <p class="text-90">
+                        <span class="inline-block rounded-full w-2 h-2 mr-1 bg-warning"></span>
+                        <span>Partially Verified - <span class="text-italic">Your sending records have been verified, but it is recommended that you add your sending MX records as well.</span> </span>
+                    </p>
+                </div>
+                -->
+
+                <div v-if="verified">
+                    <p class="text-90">
+                        <span class="inline-block rounded-full w-2 h-2 mr-1 bg-success"></span>
+                        <span>Verified</span>
+                    </p>
+                </div>
+
             </div>
             <p class="text-90" v-if="isDisabled">
                 <strong>This domain has been disabled.</strong> Please refer to your Mailgun account dashboard for more information.
@@ -102,6 +121,7 @@
                 successfulResponse: false,
                 error: '',
                 verified: false,
+                partiallyVerified: false,
                 isDisabled: false,
                 notAdded: false,
                 addingDomain: false,
@@ -130,12 +150,19 @@
                 }).then(response => {
                     let responseBody = response.data.domain.http_response_body;
                     let domain = responseBody.domain;
-                    let status = domain.state;
+                    let status = true;
 
                     vm.successfulResponse = true;
-                    vm.verified = status === 'active';
                     vm.isDisabled = domain.is_disabled;
                     vm.recordsToAdd = responseBody.sending_dns_records;
+
+                    for (var i = 0; i < vm.recordsToAdd.length; i++) {
+                        if (vm.recordsToAdd[i].valid !== 'valid') {
+                            status = false;
+                            break;
+                        }
+                    }
+                    vm.verified = status;
                 }).catch(error => {
                     let data = error.response.data;
                     let exception = data.exception;
