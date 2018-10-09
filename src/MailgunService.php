@@ -75,6 +75,29 @@ class MailgunService
     }
 
     /**
+     * Re-verify the domain status
+     * @param int $resultId
+     * @return string
+     */
+    public function verifyDomainStatus(int $resultId)
+    {
+        $modelResult = $this->getDomain($resultId);
+        $attribute = $this->columnAttribute;
+
+        if (empty($modelResult->$attribute)) {
+            return false;
+        }
+
+        $result = $this->mailgun->put("domains/".$modelResult->$attribute."/verify", [
+            'force_dkim_authority' => true
+        ]);
+
+        header('Content-Type: application/json');
+
+        return $result;
+    }
+
+    /**
      * Adds domain to the Mailgun account via the domain API
      * @param int $resultId
      * @return string
